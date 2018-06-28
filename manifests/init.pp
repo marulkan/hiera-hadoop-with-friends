@@ -33,7 +33,7 @@ class hiera-hadoop (
     include hadoop::namenode
     include hadoop::resourcemanager
     include hadoop::historyserver
-    include hadoop::httpfs
+# include hadoop::httpfs
     include hadoop::zkfc
     include hadoop::journalnode
 
