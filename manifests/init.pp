@@ -41,6 +41,7 @@ class hiera-hadoop (
       hostnames => $zookeeper_hostnames,
       realm     => $realm,
     }
+    include ::zookeeper::server
   } elsif $node_type == 'secondary-master' {
     include hadoop::namenode
     include hadoop::resourcemanager
@@ -51,6 +52,7 @@ class hiera-hadoop (
       hostnames => $zookeeper_hostnames,
       realm     => $realm,
     }
+    include ::zookeeper::server
   } elsif $node_type == 'trinary-master' {
     include hadoop::journalnode
 
@@ -58,6 +60,7 @@ class hiera-hadoop (
       hostnames => $zookeeper_hostnames,
       realm     => $realm,
     }
+    include ::zookeeper::server
   } elsif $node_type == 'frontend' {
     include hadoop::frontend
   }
