@@ -13,6 +13,7 @@ class hiera-hadoop (
   $cluster_name           = undef,
   $realm                  = undef,
   $node_type              = undef,
+  $https                  = undef,
   $hdfs_deployed          = true,
   $zookeeper_deployed     = true,
 ) {
@@ -29,6 +30,7 @@ class hiera-hadoop (
     zookeeper_hostnames    => $zookeeper_hostnames,
     cluster_name           => $cluster_name,
     realm                  => $realm,
+    https                  => $https,
 
     hdfs_deployed          => $hdfs_deployed,
     zookeeper_deployed     => $zookeeper_deployed,
