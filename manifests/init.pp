@@ -21,6 +21,8 @@ class hiera-hadoop (
   $https_keystore_password     = 'changeit',
   $https_keystore_keypassword  = undef,
 
+  $hdfs_data_dirs              = ['/var/lib/hadoop-hdfs'],
+
   $hdfs_deployed               = true,
   $zookeeper_deployed          = true,
 ) {
@@ -44,6 +46,8 @@ class hiera-hadoop (
     https_keystore              => $https_keystore,
     https_keystore_password     => $https_keystore_password,
     https_keystore_keypassword  => $https_keystore_keypassword,
+
+    hdfs_data_dirs              => $hdfs_data_dirs,
 
     hdfs_deployed               => $hdfs_deployed,
     zookeeper_deployed          => $zookeeper_deployed,
