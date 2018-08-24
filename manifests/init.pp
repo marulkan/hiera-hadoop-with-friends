@@ -79,6 +79,8 @@ class hiera-hadoop (
     include ::zookeeper::server
   } elsif $node_type == 'trinary-master' {
     include hadoop::journalnode
+    include hadoop::datanode
+    include hadoop::nodemanager
 
     class{ 'zookeeper':
       hostnames => $zookeeper_hostnames,
@@ -87,6 +89,10 @@ class hiera-hadoop (
     include ::zookeeper::server
   } elsif $node_type == 'frontend' {
     include hadoop::frontend
+  }
+  else {
+    include hadoop::datanode
+    include hadoop::nodemanager
   }
 }
 
