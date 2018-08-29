@@ -25,6 +25,9 @@ class hiera-hadoop (
 
   $hdfs_deployed               = true,
   $zookeeper_deployed          = true,
+
+  $hue_hostnames               = [ ],
+  $secret                      = '',
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -57,7 +60,7 @@ class hiera-hadoop (
     include hadoop::namenode
     include hadoop::resourcemanager
     include hadoop::historyserver
-# include hadoop::httpfs
+    include hadoop::httpfs
     include hadoop::zkfc
     include hadoop::journalnode
 
@@ -66,6 +69,16 @@ class hiera-hadoop (
       realm     => $realm,
     }
     include ::zookeeper::server
+
+    include ::hue::hdfs
+    class { '::hue':
+      defaultFS           => "hdfs://${cluster_name}",
+      httpfs_hostname     => $hue_hostname,
+      yarn_hostname       => $yarn_hostname,
+      yarn_hostname2      => $yarn_hostname2,
+      secret              => $secret,
+      zookeeper_hostnames => $zookeeper_hostnames,
+    }
   } elsif $node_type == 'secondary-master' {
     include hadoop::namenode
     include hadoop::resourcemanager
@@ -77,6 +90,8 @@ class hiera-hadoop (
       realm     => $realm,
     }
     include ::zookeeper::server
+
+    include ::hue::user
   } elsif $node_type == 'trinary-master' {
     include hadoop::journalnode
     include hadoop::datanode
