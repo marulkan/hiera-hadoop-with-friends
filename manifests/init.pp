@@ -28,7 +28,6 @@ class hiera-hadoop (
 
   $hue_hostname                = '',
   $hue_secret                  = '',
-  $alternatives_ssl            = '',
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -57,7 +56,6 @@ class hiera-hadoop (
     zookeeper_deployed          => $zookeeper_deployed,
 
     hue_hostnames               => [$hue_hostname],
-    alternatives_ssl            => $alternatives_ssl,
   }
 
   if $node_type == 'primary-master' { 
