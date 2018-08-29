@@ -26,8 +26,9 @@ class hiera-hadoop (
   $hdfs_deployed               = true,
   $zookeeper_deployed          = true,
 
-  $hue_hostnames               = [ ],
-  $secret                      = '',
+  $hue_hostname                = '',
+  $hue_secret                  = '',
+  $alternatives_ssl            = '',
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -55,8 +56,8 @@ class hiera-hadoop (
     hdfs_deployed               => $hdfs_deployed,
     zookeeper_deployed          => $zookeeper_deployed,
 
-    hue_hostnames               => $hue_hostnames,
-    secret                      => $secret,
+    hue_hostnames               => [$hue_hostname],
+    alternatives_ssl            => $alternatives_ssl,
   }
 
   if $node_type == 'primary-master' { 
@@ -79,7 +80,7 @@ class hiera-hadoop (
       httpfs_hostname     => $hue_hostname,
       yarn_hostname       => $yarn_hostname,
       yarn_hostname2      => $yarn_hostname2,
-      secret              => $secret,
+      secret              => $hue_secret,
       zookeeper_hostnames => $zookeeper_hostnames,
     }
   } elsif $node_type == 'secondary-master' {
