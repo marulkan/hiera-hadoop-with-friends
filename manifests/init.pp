@@ -54,6 +54,9 @@ class hiera-hadoop (
 
     hdfs_deployed               => $hdfs_deployed,
     zookeeper_deployed          => $zookeeper_deployed,
+
+    hue_hostnames               => $hue_hostnames,
+    secret                      => $secret,
   }
 
   if $node_type == 'primary-master' { 
