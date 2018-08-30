@@ -31,6 +31,11 @@ class hiera-hadoop (
   $db_engine                   = '',
   $hue_db_password             = '',
   $postgres_password           = '',
+  $hue_https                   = false,
+  $hue_https_cachain           = undef,
+  $hue_https_certificate       = '/etc/grid-security/hostcert.pem',
+  $hue_https_private_key       = '/etc/grid-security/hostkey.pem',
+  $hue_https_passphrase        = undef,
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -85,6 +90,11 @@ class hiera-hadoop (
       db                  => $db_engine,
       db_password         => $hue_db_password,
       # zookeeper_hostnames => $zookeeper_hostnames,
+      https             => $hue_https,
+      https_cachain     => $hue_https_cachain,
+      https_certificate => $hue_https_certificate,
+      https_private_key => $hue_https_private_key,
+      https_passphrase  => $hue_https_passphrase,
     }
 
     class { '::postgresql::server':
