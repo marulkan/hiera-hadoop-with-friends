@@ -79,7 +79,7 @@ class hiera-hadoop (
       yarn_hostname       => $yarn_hostname,
       yarn_hostname2      => $yarn_hostname2,
       secret              => $hue_secret,
-      zookeeper_hostnames => $zookeeper_hostnames,
+# zookeeper_hostnames => $zookeeper_hostnames,
     }
   } elsif $node_type == 'secondary-master' {
     include hadoop::namenode
