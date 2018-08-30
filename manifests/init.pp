@@ -90,6 +90,7 @@ class hiera-hadoop (
       db                  => $db_engine,
       db_password         => $hue_db_password,
       # zookeeper_hostnames => $zookeeper_hostnames,
+      realm             => $realm,
       https             => $hue_https,
       https_cachain     => $hue_https_cachain,
       https_certificate => $hue_https_certificate,
