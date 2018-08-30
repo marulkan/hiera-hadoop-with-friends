@@ -28,6 +28,9 @@ class hiera-hadoop (
 
   $hue_hostname                = '',
   $hue_secret                  = '',
+  $db_engine                   = '',
+  $hue_db_password             = '',
+  $postgres_password           = '',
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -79,8 +82,20 @@ class hiera-hadoop (
       yarn_hostname       => $yarn_hostname,
       yarn_hostname2      => $yarn_hostname2,
       secret              => $hue_secret,
-# zookeeper_hostnames => $zookeeper_hostnames,
+      db                  => $db_engine,
+      db_password         => $hue_db_password,
+      # zookeeper_hostnames => $zookeeper_hostnames,
     }
+
+    class { '::postgresql::server':
+      postgres_password   => $postgres_password,
+    }
+    include ::postgresql::server
+    postgresql::server::db { 'hue':
+      user     => 'hue',
+      password => postgresql_password('hue', $hue_db_password),
+    }
+    Postgresql::Server::Db['hue'] -> Class['hue::service']
   } elsif $node_type == 'secondary-master' {
     include hadoop::namenode
     include hadoop::resourcemanager
