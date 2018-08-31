@@ -36,6 +36,11 @@ class hiera-hadoop (
   $hue_https_certificate       = '/etc/grid-security/hostcert.pem',
   $hue_https_private_key       = '/etc/grid-security/hostkey.pem',
   $hue_https_passphrase        = undef,
+  $hue_auth = undef,
+  $hue_auth_ldap_base_dn = 'DC=mycompany,DC=com',
+  $hue_auth_ldap_bind_dn = 'CN=ServiceAccount,DC=mycompany,DC=com',
+  $hue_auth_ldap_bind_password = undef,
+  $hue_auth_ldap_url = 'ldap://auth.mycompany.com',
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -82,20 +87,25 @@ class hiera-hadoop (
 
     include ::hue::hdfs
     class { '::hue':
-      defaultFS           => "hdfs://${cluster_name}",
-      httpfs_hostname     => $hue_hostname,
-      yarn_hostname       => $yarn_hostname,
-      yarn_hostname2      => $yarn_hostname2,
-      secret              => $hue_secret,
-      db                  => $db_engine,
-      db_password         => $hue_db_password,
-      # zookeeper_hostnames => $zookeeper_hostnames,
-      realm             => $realm,
-      https             => $hue_https,
-      https_cachain     => $hue_https_cachain,
-      https_certificate => $hue_https_certificate,
-      https_private_key => $hue_https_private_key,
-      https_passphrase  => $hue_https_passphrase,
+      defaultFS               => "hdfs://${cluster_name}",
+      httpfs_hostname         => $hue_hostname,
+      yarn_hostname           => $yarn_hostname,
+      yarn_hostname2          => $yarn_hostname2,
+      secret                  => $hue_secret,
+      db                      => $db_engine,
+      db_password             => $hue_db_password,
+      # zookeeper_hostnames   => $zookeeper_hostnames,
+      realm                   => $realm,
+      https                   => $hue_https,
+      https_cachain           => $hue_https_cachain,
+      https_certificate       => $hue_https_certificate,
+      https_private_key       => $hue_https_private_key,
+      https_passphrase        => $hue_https_passphrase,
+      auth                    => $hue_auth,
+      auth_ldap_base_dn       => $hue_auth_ldap_base_dn,
+      auth_ldap_bind_dn       => $hue_auth_ldap_bind_dn,
+      auth_ldap_bind_password => $hue_auth_ldap_bind_password,
+      auth_ldap_url           => $hue_auth_ldap_url,
     }
 
     class { '::postgresql::server':
