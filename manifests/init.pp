@@ -26,11 +26,12 @@ class hiera-hadoop (
   $hdfs_deployed               = true,
   $zookeeper_deployed          = true,
 
+  $db_engine                   = '',
+  $postgres_password           = '',
+
   $hue_hostname                = '',
   $hue_secret                  = '',
-  $db_engine                   = '',
   $hue_db_password             = '',
-  $postgres_password           = '',
   $hue_https                   = false,
   $hue_https_cachain           = undef,
   $hue_https_certificate       = '/etc/grid-security/hostcert.pem',
@@ -43,6 +44,8 @@ class hiera-hadoop (
   $hue_auth_ldap_url           = 'ldap://auth.mycompany.com',
   $hue_auth_ldap_nt_domain     = 'mycompany.com',
   $hue_auth_ldap_login_groups  = undef,
+
+  $sentry_db_password          = '',
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -112,15 +115,32 @@ class hiera-hadoop (
       auth_ldap_login_groups  => $hue_auth_ldap_login_groups,
     }
 
+    include ::sentry
+    include ::sentry::client
+    include ::sentry::server
+    class{'::sentry':
+      db          => $db_engine,
+      db_password => $sentry_db_password,
+      realm       => $realm,
+    }
+
     class { '::postgresql::server':
       postgres_password   => $postgres_password,
     }
     include ::postgresql::server
     postgresql::server::db { 'hue':
-      user     => 'hue',
-      password => postgresql_password('hue', $hue_db_password),
+        user     => 'hue',
+        password => postgresql_password('hue', $hue_db_password),
     }
+    postgresql::server::db { 'sentry':
+        user     => 'sentry',
+        password => postgresql_password('sentry', $sentry_db_password),
+    }
+    include postgresql::lib::java
     Postgresql::Server::Db['hue'] -> Class['hue::service']
+    Postgresql::Server::Db['sentry'] -> Class['::sentry::server::config']
+    Class['postgresql::lib::java'] -> Class['::sentry::server::config']
+
   } elsif $node_type == 'secondary-master' {
     include hadoop::namenode
     include hadoop::resourcemanager
@@ -152,4 +172,3 @@ class hiera-hadoop (
     include hadoop::nodemanager
   }
 }
-
