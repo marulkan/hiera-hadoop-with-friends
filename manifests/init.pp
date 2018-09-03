@@ -115,14 +115,14 @@ class hiera-hadoop (
       auth_ldap_login_groups  => $hue_auth_ldap_login_groups,
     }
 
-    include ::sentry
-    include ::sentry::client
-    include ::sentry::server
     class{'::sentry':
       db          => $db_engine,
       db_password => $sentry_db_password,
       realm       => $realm,
     }
+    include ::sentry
+    include ::sentry::client
+    include ::sentry::server
 
     class { '::postgresql::server':
       postgres_password   => $postgres_password,
