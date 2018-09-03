@@ -37,11 +37,12 @@ class hiera-hadoop (
   $hue_https_private_key       = '/etc/grid-security/hostkey.pem',
   $hue_https_passphrase        = undef,
   $hue_auth = undef,
-  $hue_auth_ldap_base_dn = 'DC=mycompany,DC=com',
-  $hue_auth_ldap_bind_dn = 'CN=ServiceAccount,DC=mycompany,DC=com',
+  $hue_auth_ldap_base_dn       = 'DC=mycompany,DC=com',
+  $hue_auth_ldap_bind_dn       = 'CN=ServiceAccount,DC=mycompany,DC=com',
   $hue_auth_ldap_bind_password = undef,
-  $hue_auth_ldap_url = 'ldap://auth.mycompany.com',
-  $hue_auth_ldap_nt_domain = 'mycompany.com',
+  $hue_auth_ldap_url           = 'ldap://auth.mycompany.com',
+  $hue_auth_ldap_nt_domain     = 'mycompany.com',
+  $hue_auth_ldap_login_groups  = undef,
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -108,6 +109,7 @@ class hiera-hadoop (
       auth_ldap_bind_password => $hue_auth_ldap_bind_password,
       auth_ldap_url           => $hue_auth_ldap_url,
       auth_ldap_nt_domain     => $hue_auth_ldap_nt_domain,
+      auth_ldap_login_groups  => $hue_auth_ldap_login_groups,
     }
 
     class { '::postgresql::server':
