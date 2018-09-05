@@ -87,7 +87,7 @@ class hiera-hadoop (
       realm               => $realm,
       db                  => $db_engine,
       db_password         => $hive_db_password,
-      sentry_hostname     => $hdfs_hostname,
+      #sentry_hostname     => $hdfs_hostname,
       zookeeper_hostnames => $zookeeper_hostnames,
   }
 
