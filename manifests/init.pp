@@ -46,6 +46,7 @@ class hiera-hadoop (
   $hue_auth_ldap_login_groups  = undef,
 
   $sentry_db_password          = '',
+  $hive_db_password          = '',
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -74,6 +75,20 @@ class hiera-hadoop (
     zookeeper_deployed          => $zookeeper_deployed,
 
     hue_hostnames               => [$hue_hostname],
+
+    properties => {
+        'hadoop.proxyuser.hive.groups' => 'hive,impala,users',
+        'hadoop.proxyuser.hive.hosts'  => '*',
+    },
+  }
+  class{ 'hive':
+      group               => 'users',
+      metastore_hostname  => $hdfs_hostname,
+      realm               => $realm,
+      db                  => $db_engine,
+      db_password         => $hive_db_password,
+      sentry_hostname     => $hdfs_hostname,
+      zookeeper_hostnames => $zookeeper_hostnames,
   }
 
   if $node_type == 'primary-master' { 
@@ -83,6 +98,9 @@ class hiera-hadoop (
     include hadoop::httpfs
     include hadoop::zkfc
     include hadoop::journalnode
+    include hive::hdfs
+    include ::hive::metastore
+    include ::hive::server2
 
     class{ 'zookeeper':
       hostnames => $zookeeper_hostnames,
@@ -136,16 +154,33 @@ class hiera-hadoop (
         user     => 'sentry',
         password => postgresql_password('sentry', $sentry_db_password),
     }
+    postgresql::server::db { 'metastore':
+        user     => 'hive',
+        password => postgresql_password('hive', $hive_db_password),
+    }
+    ->
+    exec { 'metastore-import':
+        command => 'cat /usr/lib/hive/scripts/metastore/upgrade/postgres/hive-schema-0.13.0.postgres.sql | psql metastore && touch /var/lib/hive/.puppet-hive-schema-imported',
+        path    => '/bin/:/usr/bin',
+        user    => 'hive',
+        creates => '/var/lib/hive/.puppet-hive-schema-imported',
+    }
     include postgresql::lib::java
     Postgresql::Server::Db['hue'] -> Class['hue::service']
     Postgresql::Server::Db['sentry'] -> Class['::sentry::server::config']
     Class['postgresql::lib::java'] -> Class['::sentry::server::config']
+    Class['postgresql::lib::java'] -> Class['hive::metastore::config']
+    Class['hive::metastore::install'] -> Postgresql::Server::Db['metastore']
+    Postgresql::Server::Db['metastore'] -> Class['hive::metastore::service']
+    Exec['metastore-import'] -> Class['hive::metastore::service']
+    Class['hadoop::namenode::service'] -> Class['hive::metastore::service']
 
   } elsif $node_type == 'secondary-master' {
     include hadoop::namenode
     include hadoop::resourcemanager
     include hadoop::zkfc
     include hadoop::journalnode
+    include hive::user
 
     class{ 'zookeeper':
       hostnames => $zookeeper_hostnames,
@@ -158,6 +193,7 @@ class hiera-hadoop (
     include hadoop::journalnode
     include hadoop::datanode
     include hadoop::nodemanager
+    include ::hive::worker
 
     class{ 'zookeeper':
       hostnames => $zookeeper_hostnames,
@@ -170,5 +206,6 @@ class hiera-hadoop (
   else {
     include hadoop::datanode
     include hadoop::nodemanager
+    include ::hive::worker
   }
 }
