@@ -160,7 +160,7 @@ class hiera-hadoop (
     }
     ->
     exec { 'metastore-import':
-        command => 'cat /usr/lib/hive/scripts/metastore/upgrade/postgres/hive-schema-0.13.0.postgres.sql | psql metastore && touch /var/lib/hive/.puppet-hive-schema-imported',
+        command => 'cat /usr/lib/hive/scripts/metastore/upgrade/postgres/hive-schema-0.14.0.postgres.sql | psql metastore && touch /var/lib/hive/.puppet-hive-schema-imported',
         path    => '/bin/:/usr/bin',
         user    => 'hive',
         creates => '/var/lib/hive/.puppet-hive-schema-imported',
