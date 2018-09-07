@@ -82,12 +82,12 @@ class hiera-hadoop (
     },
   }
   class{ 'hive':
-      group               => 'users',
+      group               => 'hive',
       metastore_hostname  => $hdfs_hostname,
       realm               => $realm,
       db                  => $db_engine,
       db_password         => $hive_db_password,
-      #sentry_hostname     => $hdfs_hostname,
+      sentry_hostname     => $hdfs_hostname,
       zookeeper_hostnames => $zookeeper_hostnames,
   }
 
