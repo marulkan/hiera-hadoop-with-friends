@@ -114,6 +114,7 @@ class hiera-hadoop (
       httpfs_hostname         => $hue_hostname,
       yarn_hostname           => $yarn_hostname,
       yarn_hostname2          => $yarn_hostname2,
+      hive_server2_hostname   => $hdfs_hostname,
       secret                  => $hue_secret,
       db                      => $db_engine,
       db_password             => $hue_db_password,
