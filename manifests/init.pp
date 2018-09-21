@@ -96,6 +96,14 @@ class hiera-hadoop (
       statestore_hostname => $hdfs_hostname,
       servers             => $slaves,
       realm               => $realm,
+      supplied_packages   => {
+          catalog    => 'impala-catalog',
+          debug      => 'impala-dbg',
+          frontend   => 'impala-shell',
+          server     => 'impala-server',
+          statestore => 'impala-state-store',
+          udf        => 'impala-udf-devel',
+      }
   }
 
   if $node_type == 'primary-master' { 
