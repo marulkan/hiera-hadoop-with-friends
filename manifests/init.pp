@@ -91,6 +91,13 @@ class hiera-hadoop (
       zookeeper_hostnames => $zookeeper_hostnames,
   }
 
+  class{ 'impala':
+      catalog_hostname    => $hdfs_hostname,
+      statestore_hostname => $hdfs_hostname,
+      servers             => $slaves,
+      realm               => $realm,
+  }
+
   if $node_type == 'primary-master' { 
     include hadoop::namenode
     include hadoop::resourcemanager
@@ -101,6 +108,9 @@ class hiera-hadoop (
     include hive::hdfs
     include ::hive::metastore
     include ::hive::server2
+    include ::impala::frontend
+    include ::impala::statestore
+    include ::impala::catalog
 
     class{ 'zookeeper':
       hostnames => $zookeeper_hostnames,
@@ -144,7 +154,7 @@ class hiera-hadoop (
     include ::sentry::client
     include ::sentry::server
 
-    class { '::postgresql::server':
+    class{ '::postgresql::server':
       postgres_password   => $postgres_password,
     }
     include ::postgresql::server
@@ -191,6 +201,7 @@ class hiera-hadoop (
     include ::zookeeper::server
 
     include ::hue::user
+    include ::impala::user
   } elsif $node_type == 'trinary-master' {
     include hadoop::journalnode
     include hadoop::datanode
@@ -202,6 +213,7 @@ class hiera-hadoop (
       realm     => $realm,
     }
     include ::zookeeper::server
+    include ::impala::server
   } elsif $node_type == 'frontend' {
     include hadoop::frontend
   }
@@ -209,5 +221,6 @@ class hiera-hadoop (
     include hadoop::datanode
     include hadoop::nodemanager
     include ::hive::worker
+    include ::impala::server
   }
 }
