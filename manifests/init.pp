@@ -96,6 +96,7 @@ class hiera-hadoop (
       statestore_hostname => $hdfs_hostname,
       servers             => $slaves,
       realm               => $realm,
+      group               => 'hive',
       supplied_packages   => {
           catalog    => 'impala-catalog',
           debug      => 'impala-dbg',
