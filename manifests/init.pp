@@ -145,6 +145,7 @@ class hiera-hadoop (
       https_private_key       => $hue_https_private_key,
       https_passphrase        => $hue_https_passphrase,
       sentry_hostname         => $hdfs_hostname,
+      impala_hostname         => $hdfs_hostname,
       auth                    => $hue_auth,
       auth_ldap_base_dn       => $hue_auth_ldap_base_dn,
       auth_ldap_bind_dn       => $hue_auth_ldap_bind_dn,
