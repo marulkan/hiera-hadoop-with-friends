@@ -165,7 +165,7 @@ class hiera-hadoop (
       db           => $db_engine,
       db_password  => $sentry_db_password,
       realm        => $realm,
-      admin_groups => 'sentry,hive,impala,hue,selnhubadm',
+      admin_groups => [ 'sentry', 'hive', 'impala', 'hue', 'selnhubadm' ]
     }
     include ::sentry
     include ::sentry::client
