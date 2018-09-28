@@ -77,7 +77,7 @@ class hiera-hadoop (
     hue_hostnames               => [$hue_hostname],
 
     properties => {
-        'hadoop.proxyuser.hive.groups' => 'hive,impala,users',
+        'hadoop.proxyuser.hive.groups' => 'hive,impala,users,hue',
         'hadoop.proxyuser.hive.hosts'  => '*',
     },
   }
@@ -97,6 +97,12 @@ class hiera-hadoop (
       servers             => $slaves,
       realm               => $realm,
       group               => 'hive',
+      parameters => {
+          server => {
+                'authorized_proxy_user_config' => '\'hue=*\'',
+                'server_name' => 'server1'
+          }
+      },
       supplied_packages   => {
           catalog    => 'impala-catalog',
           debug      => 'impala-dbg',
@@ -156,9 +162,10 @@ class hiera-hadoop (
     }
 
     class{'::sentry':
-      db          => $db_engine,
-      db_password => $sentry_db_password,
-      realm       => $realm,
+      db           => $db_engine,
+      db_password  => $sentry_db_password,
+      realm        => $realm,
+      admin_groups => 'sentry,hive,impala,hue,selnhubadm',
     }
     include ::sentry
     include ::sentry::client
