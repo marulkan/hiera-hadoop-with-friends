@@ -108,8 +108,8 @@ class hiera-hadoop (
       https_private_key   => $impala_https_private_key,
       parameters => {
           server => {
-                'authorized_proxy_user_config' => '\'hue=*\'',
-                'server_name' => 'server1'
+                'authorized_proxy_user_config' => '\'hue=* impala=*\'',
+                'server_name' => 'impala'
           }
       },
       supplied_packages   => {
