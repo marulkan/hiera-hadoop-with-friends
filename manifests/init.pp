@@ -45,6 +45,11 @@ class hiera-hadoop (
   $hue_auth_ldap_nt_domain     = 'mycompany.com',
   $hue_auth_ldap_login_groups  = undef,
 
+  $impala_https                = false,
+  $impala_https_cachain        = '/etc/grid-security/ca-chain.pem',
+  $impala_https_certificate    = '/etc/grid-security/hostcert.pem',
+  $impala_https_private_key    = '/etc/grid-security/hostkey.pem',
+
   $sentry_db_password          = '',
   $hive_db_password          = '',
 ) {
@@ -97,6 +102,10 @@ class hiera-hadoop (
       servers             => $slaves,
       realm               => $realm,
       group               => 'hive',
+      https               => $impala_https,
+      https_cachain       => $impala_https_cachain,
+      https_certificate   => $impala_https_certificate,
+      https_private_key   => $impala_https_private_key,
       parameters => {
           server => {
                 'authorized_proxy_user_config' => '\'hue=*\'',
