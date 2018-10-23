@@ -52,7 +52,7 @@ class hiera-hadoop (
 
   $sentry_db_password          = '',
   $hive_db_password            = '',
-  $properties                  = undef,
+  $hadoop_properties           = {},
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -81,15 +81,7 @@ class hiera-hadoop (
     zookeeper_deployed          => $zookeeper_deployed,
 
     hue_hostnames               => [$hue_hostname],
-
-    if $properties == undef {
-      properties => {
-          'hadoop.proxyuser.hive.groups' => 'hive,impala,users,hue',
-          'hadoop.proxyuser.hive.hosts'  => '*',
-      },
-    } else {
-      properties => $properties,
-    }
+    properties                  => $hadoop_properties,
   }
   class{ 'hive':
       group               => 'hive',
