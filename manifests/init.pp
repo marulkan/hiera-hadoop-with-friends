@@ -51,7 +51,8 @@ class hiera-hadoop (
   $impala_https_private_key    = '/etc/grid-security/hostkey.pem',
 
   $sentry_db_password          = '',
-  $hive_db_password          = '',
+  $hive_db_password            = '',
+  $properties                  = undef,
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -81,10 +82,14 @@ class hiera-hadoop (
 
     hue_hostnames               => [$hue_hostname],
 
-    properties => {
-        'hadoop.proxyuser.hive.groups' => 'hive,impala,users,hue',
-        'hadoop.proxyuser.hive.hosts'  => '*',
-    },
+    if $properties == undef {
+      properties => {
+          'hadoop.proxyuser.hive.groups' => 'hive,impala,users,hue',
+          'hadoop.proxyuser.hive.hosts'  => '*',
+      },
+    } else {
+      properties => $properties,
+    }
   }
   class{ 'hive':
       group               => 'hive',
