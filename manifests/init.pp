@@ -106,16 +106,16 @@ class hiera-hadoop (
       parameters                   => {
           catalog                  => {
               'sentry_config'      => '/etc/sentry/conf/sentry-site.xml',
-              'load_auth_to_local' => true,
+              'load_auth_to_local' => 'true',
           },
           server                             => {
               'authorized_proxy_user_config' => '\'hue=*\'',
               'server_name'                  => 'server1',
               'sentry_config'                => '/etc/sentry/conf/sentry-site.xml',
-              'load_auth_to_local'           => true,
+              'load_auth_to_local'           => 'true',
           },
           statestore               => {
-              'load_auth_to_local' => true,
+              'load_auth_to_local' => 'true',
           },
       },
       supplied_packages   => {
