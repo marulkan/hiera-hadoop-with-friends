@@ -94,20 +94,29 @@ class hiera-hadoop (
   }
 
   class{ 'impala':
-      catalog_hostname    => $hdfs_hostname,
-      statestore_hostname => $hdfs_hostname,
-      servers             => $slaves,
-      realm               => $realm,
-      group               => 'hive',
-      https               => $impala_https,
-      https_cachain       => $impala_https_cachain,
-      https_certificate   => $impala_https_certificate,
-      https_private_key   => $impala_https_private_key,
-      parameters => {
-          server => {
-                'authorized_proxy_user_config' => '\'hue=*\'',
-                'server_name' => 'server1'
-          }
+      catalog_hostname             => $hdfs_hostname,
+      statestore_hostname          => $hdfs_hostname,
+      servers                      => $slaves,
+      realm                        => $realm,
+      group                        => 'hive',
+      https                        => $impala_https,
+      https_cachain                => $impala_https_cachain,
+      https_certificate            => $impala_https_certificate,
+      https_private_key            => $impala_https_private_key,
+      parameters                   => {
+          catalog                  => {
+              'sentry_config'      => '/etc/sentry/conf/sentry-site.xml',
+              'load_auth_to_local' => true,
+          },
+          server                             => {
+              'authorized_proxy_user_config' => '\'hue=*\'',
+              'server_name'                  => 'server1',
+              'sentry_config'                => '/etc/sentry/conf/sentry-site.xml',
+              'load_auth_to_local'           => true,
+          },
+          statestore               => {
+              'load_auth_to_local' => true,
+          },
       },
       supplied_packages   => {
           catalog    => 'impala-catalog',
