@@ -53,6 +53,8 @@ class hiera-hadoop (
   $sentry_db_password          = '',
   $hive_db_password            = '',
   $hadoop_properties           = {},
+  $sentry_properties           = {},
+  $hive_properties             = {},
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -91,6 +93,7 @@ class hiera-hadoop (
       db_password         => $hive_db_password,
       sentry_hostname     => $hdfs_hostname,
       zookeeper_hostnames => $zookeeper_hostnames,
+      properties          => $hive_properties,
   }
 
   class{ 'impala':
@@ -180,7 +183,8 @@ class hiera-hadoop (
       db           => $db_engine,
       db_password  => $sentry_db_password,
       realm        => $realm,
-      admin_groups => [ 'sentry', 'hive', 'impala', 'hue', 'selnhubadm' ]
+      admin_groups => [ 'sentry', 'hive', 'impala', 'hue', 'selnhubadm' ],
+      properties   => $sentry_properties,
     }
     include ::sentry
     include ::sentry::client
