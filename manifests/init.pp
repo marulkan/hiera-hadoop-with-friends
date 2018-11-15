@@ -55,6 +55,19 @@ class hiera-hadoop (
   $hadoop_properties           = {},
   $sentry_properties           = {},
   $hive_properties             = {},
+  $impala_params               = {
+    catalog                  => {
+      'sentry_config'      => '/etc/sentry/conf/sentry-site.xml',
+    },
+    server                             => {
+      'authorized_proxy_user_config' => '\'hue=*\'',
+      'server_name'                  => 'server1',
+      'sentry_config'                => '/etc/sentry/conf/sentry-site.xml',
+    },
+    statestore               => {
+    },
+  },
+
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -97,27 +110,17 @@ class hiera-hadoop (
   }
 
   class{ 'impala':
-      catalog_hostname             => $hdfs_hostname,
-      statestore_hostname          => $hdfs_hostname,
-      servers                      => $slaves,
-      realm                        => $realm,
-      group                        => 'hive',
-      https                        => $impala_https,
-      https_cachain                => $impala_https_cachain,
-      https_certificate            => $impala_https_certificate,
-      https_private_key            => $impala_https_private_key,
-      parameters                   => {
-          catalog                  => {
-              'sentry_config'      => '/etc/sentry/conf/sentry-site.xml',
-          },
-          server                             => {
-              'authorized_proxy_user_config' => '\'hue=*\'',
-              'server_name'                  => 'server1',
-              'sentry_config'                => '/etc/sentry/conf/sentry-site.xml',
-          },
-          statestore               => {
-          },
-      },
+      catalog_hostname    => $hdfs_hostname,
+      statestore_hostname => $hdfs_hostname,
+      servers             => $slaves,
+      realm               => $realm,
+      group               => 'hive',
+      https               => $impala_https,
+      https_cachain       => $impala_https_cachain,
+      https_certificate   => $impala_https_certificate,
+      https_private_key   => $impala_https_private_key,
+      parameters          => $impala_params,
+
       supplied_packages   => {
           catalog    => 'impala-catalog',
           debug      => 'impala-dbg',
