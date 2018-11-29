@@ -69,8 +69,6 @@ class hiera-hadoop (
     },
   },
 
-  $principal = undef,
-  $keytab = undef,
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -100,12 +98,6 @@ class hiera-hadoop (
 
     hue_hostnames               => [$hue_hostname],
     properties                  => $hadoop_properties,
-    if ($principal)  {
-      class{ 'hadoop::datanode': principal => $principal, }
-      class{ 'hadoop::historyserver': principal => $principal, }
-      class{ 'hadoop::journalnode': principal => $principal, }
-      class{ 'hadoop::nodemanager': principal => $principal, }
-    }
   }
   class{ 'hive':
       group               => 'hive',
@@ -157,7 +149,6 @@ class hiera-hadoop (
     class{ 'zookeeper':
       hostnames => $zookeeper_hostnames,
       realm     => $realm,
-      principal => $principal,
     }
     include ::zookeeper::server
 
@@ -187,9 +178,6 @@ class hiera-hadoop (
       auth_ldap_url           => $hue_auth_ldap_url,
       auth_ldap_nt_domain     => $hue_auth_ldap_nt_domain,
       auth_ldap_login_groups  => $hue_auth_ldap_login_groups,
-      if ($principal) { 
-        principal_hue => $principal
-      }
     }
 
     class{'::sentry':
@@ -198,7 +186,6 @@ class hiera-hadoop (
       realm        => $realm,
       admin_groups => [ 'sentry', 'hive', 'impala', 'hue', 'selnhubadm' ],
       properties   => $sentry_properties,
-      if $keytab != undef { keytab => $keytab }
     }
     include ::sentry
     include ::sentry::client
@@ -247,7 +234,6 @@ class hiera-hadoop (
     class{ 'zookeeper':
       hostnames => $zookeeper_hostnames,
       realm     => $realm,
-      principal => $principal,
     }
     include ::zookeeper::server
 
@@ -262,7 +248,6 @@ class hiera-hadoop (
     class{ 'zookeeper':
       hostnames => $zookeeper_hostnames,
       realm     => $realm,
-      principal => $principal,
     }
     include ::zookeeper::server
     include ::impala::server
