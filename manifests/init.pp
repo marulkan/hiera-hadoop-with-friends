@@ -69,6 +69,9 @@ class hiera-hadoop (
     },
   },
 
+  $impala_keytab_source = undef,
+
+
 ) {
   class{ 'hadoop': 
     hdfs_hostname               => $hdfs_hostname,
@@ -121,6 +124,7 @@ class hiera-hadoop (
       https_certificate   => $impala_https_certificate,
       https_private_key   => $impala_https_private_key,
       parameters          => $impala_params,
+      keytab_source       => $impala_keytab_source,
 
       supplied_packages   => {
           catalog    => 'impala-catalog',
