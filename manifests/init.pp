@@ -69,8 +69,20 @@ class hiera-hadoop (
     },
   },
 
-  $impala_keytab_source = undef,
+  $impala_keytab_source    = undef,
+  $hive_keytab_source      = undef,
+  $hue_keytab_source       = undef,
+  $sentry_keytab_source    = undef,
+  $zookeeper_keytab_source = undef,
 
+  $hadoop_datanode_keytab_source        = undef,
+  $hadoop_httpfs_keytab_source          = undef,
+  $hadoop_jobhistory_keytab_source      = undef,
+  $hadoop_journalnode_keytab_source     = undef,
+  $hadoop_namenode_keytab_source        = undef,
+  $hadoop_nfs_keytab_source             = undef,
+  $hadoop_nodemanager_keytab_source     = undef,
+  $hadoop_resourcemanager_keytab_source = undef,
 
 ) {
   class{ 'hadoop': 
@@ -101,6 +113,15 @@ class hiera-hadoop (
 
     hue_hostnames               => [$hue_hostname],
     properties                  => $hadoop_properties,
+
+    keytab_source_datanode        => $hadoop_datanode_keytab_source,
+    keytab_source_httpfs          => $hadoop_httpfs_keytab_source,
+    keytab_source_jobhistory      => $hadoop_jobhistory_keytab_source,
+    keytab_source_journalnode     => $hadoop_journalnode_keytab_source,
+    keytab_source_namenode        => $hadoop_namenode_keytab_source,
+    keytab_source_nfs             => $hadoop_nfs_keytab_source,
+    keytab_source_nodemanager     => $hadoop_nodemanager_keytab_source,
+    keytab_source_resourcemanager => $hadoop_resourcemanager_keytab_source,
   }
   class{ 'hive':
       group               => 'hive',
@@ -111,6 +132,7 @@ class hiera-hadoop (
       sentry_hostname     => $hdfs_hostname,
       zookeeper_hostnames => $zookeeper_hostnames,
       properties          => $hive_properties,
+      keytab_source       => $hive_keytab_source,
   }
 
   class{ 'impala':
@@ -151,8 +173,9 @@ class hiera-hadoop (
     include ::impala::catalog
 
     class{ 'zookeeper':
-      hostnames => $zookeeper_hostnames,
-      realm     => $realm,
+      hostnames     => $zookeeper_hostnames,
+      realm         => $realm,
+      keytab_source => $zookeeper_keytab_source,
     }
     include ::zookeeper::server
 
@@ -182,14 +205,16 @@ class hiera-hadoop (
       auth_ldap_url           => $hue_auth_ldap_url,
       auth_ldap_nt_domain     => $hue_auth_ldap_nt_domain,
       auth_ldap_login_groups  => $hue_auth_ldap_login_groups,
+      keytab_source           => $hue_keytab_source,
     }
 
     class{'::sentry':
-      db           => $db_engine,
-      db_password  => $sentry_db_password,
-      realm        => $realm,
-      admin_groups => [ 'sentry', 'hive', 'impala', 'hue', 'selnhubadm' ],
-      properties   => $sentry_properties,
+      db            => $db_engine,
+      db_password   => $sentry_db_password,
+      realm         => $realm,
+      admin_groups  => [ 'sentry', 'hive', 'impala', 'hue', 'selnhubadm' ],
+      properties    => $sentry_properties,
+      keytab_source => $sentry_keytab_source,
     }
     include ::sentry
     include ::sentry::client
@@ -236,8 +261,9 @@ class hiera-hadoop (
     include hive::user
 
     class{ 'zookeeper':
-      hostnames => $zookeeper_hostnames,
-      realm     => $realm,
+      hostnames     => $zookeeper_hostnames,
+      realm         => $realm,
+      keytab_source => $zookeeper_keytab_source,
     }
     include ::zookeeper::server
 
@@ -250,8 +276,9 @@ class hiera-hadoop (
     include ::hive::worker
 
     class{ 'zookeeper':
-      hostnames => $zookeeper_hostnames,
-      realm     => $realm,
+      hostnames     => $zookeeper_hostnames,
+      realm         => $realm,
+      keytab_source => $zookeeper_keytab_source,
     }
     include ::zookeeper::server
     include ::impala::server
