@@ -83,6 +83,7 @@ class hiera-hadoop (
   $hadoop_nfs_keytab_source             = undef,
   $hadoop_nodemanager_keytab_source     = undef,
   $hadoop_resourcemanager_keytab_source = undef,
+  $hadoop_http_keytab_source            = undef,
 
 ) {
   class{ 'hadoop': 
@@ -122,6 +123,7 @@ class hiera-hadoop (
     keytab_source_nfs             => $hadoop_nfs_keytab_source,
     keytab_source_nodemanager     => $hadoop_nodemanager_keytab_source,
     keytab_source_resourcemanager => $hadoop_resourcemanager_keytab_source,
+    keytab_source_http            => $hadoop_http_keytab_source,
   }
   class{ 'hive':
       group               => 'hive',
