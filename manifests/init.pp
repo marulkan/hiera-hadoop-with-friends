@@ -69,10 +69,15 @@ class hiera-hadoop (
     },
   },
 
+  $knox_keytab      = '/etc/security/keytab/knox.service.keytab',
+  $spark_keytab     = '/etc/security/keytab/spark.service.keytab',
+
   $impala_keytab_source    = undef,
   $hive_keytab_source      = undef,
   $hue_keytab_source       = undef,
+  $knox_keytab_source      = undef,
   $sentry_keytab_source    = undef,
+  $spark_keytab_source     = undef,
   $zookeeper_keytab_source = undef,
 
   $hadoop_datanode_keytab_source        = undef,
@@ -255,6 +260,23 @@ class hiera-hadoop (
     Exec['metastore-import'] -> Class['hive::metastore::service']
     Class['hadoop::namenode::service'] -> Class['hive::metastore::service']
 
+    if $knox_keytab_source {
+      file { $knox_keytab:
+        owner  => 'knox',
+        group  => 'knox',
+        mode   => '0400',
+        source => $knox_keytab_source,
+      }
+    }
+    if $spark_keytab_source {
+      file { $spark_keytab:
+        owner  => 'spark',
+        group  => 'spark',
+        mode   => '0400',
+        source => $spark_keytab_source,
+      }
+    }
+
   } elsif $node_type == 'secondary-master' {
     include hadoop::namenode
     include hadoop::resourcemanager
@@ -271,6 +293,24 @@ class hiera-hadoop (
 
     include ::hue::user
     include ::impala::user
+
+    if $knox_keytab_source {
+      file { $knox_keytab:
+        owner  => 'knox',
+        group  => 'knox',
+        mode   => '0400',
+        source => $knox_keytab_source,
+      }
+    }
+    if $spark_keytab_source {
+      file { $spark_keytab:
+        owner  => 'spark',
+        group  => 'spark',
+        mode   => '0400',
+        source => $spark_keytab_source,
+      }
+    }
+
   } elsif $node_type == 'trinary-master' {
     include hadoop::journalnode
     include hadoop::datanode
