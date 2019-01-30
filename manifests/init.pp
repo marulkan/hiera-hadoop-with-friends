@@ -90,56 +90,117 @@ class hiera-hadoop (
   $hadoop_resourcemanager_keytab_source = undef,
   $hadoop_http_keytab_source            = undef,
 
+  $alternative_configuration_dir_for_client = undef,
+
 ) {
-  class{ 'hadoop': 
-    hdfs_hostname               => $hdfs_hostname,
-    hdfs_hostname2              => $hdfs_hostname2,
-    yarn_hostname               => $yarn_hostname ,
-    yarn_hostname2              => $yarn_hostname2,
-    historyserver_hostname      => $historyserver_hostname,
-    httpfs_hostnames            => $httpfs_hostnames,
-    slaves                      => $slaves,
-    frontends                   => $frontends,
-    journalnode_hostnames       => $journalnode_hostnames,
-    zookeeper_hostnames         => $zookeeper_hostnames,
-    cluster_name                => $cluster_name,
-    realm                       => $realm,
 
-    https                       => $https,
-    https_cacerts               => $https_cacerts,
-    https_cacerts_password      => $https_cacerts_password,
-    https_keystore              => $https_keystore,
-    https_keystore_password     => $https_keystore_password,
-    https_keystore_keypassword  => $https_keystore_keypassword,
+  if $alternative_configuration_dir_for_client {
+      class{ 'hadoop': 
+        hdfs_hostname               => $hdfs_hostname,
+        hdfs_hostname2              => $hdfs_hostname2,
+        yarn_hostname               => $yarn_hostname ,
+        yarn_hostname2              => $yarn_hostname2,
+        historyserver_hostname      => $historyserver_hostname,
+        httpfs_hostnames            => $httpfs_hostnames,
+        slaves                      => $slaves,
+        frontends                   => $frontends,
+        journalnode_hostnames       => $journalnode_hostnames,
+        zookeeper_hostnames         => $zookeeper_hostnames,
+        cluster_name                => $cluster_name,
+        realm                       => $realm,
 
-    hdfs_data_dirs              => $hdfs_data_dirs,
+        https                       => $https,
+        https_cacerts               => $https_cacerts,
+        https_cacerts_password      => $https_cacerts_password,
+        https_keystore              => $https_keystore,
+        https_keystore_password     => $https_keystore_password,
+        https_keystore_keypassword  => $https_keystore_keypassword,
 
-    hdfs_deployed               => $hdfs_deployed,
-    zookeeper_deployed          => $zookeeper_deployed,
+        hdfs_data_dirs              => $hdfs_data_dirs,
 
-    hue_hostnames               => [$hue_hostname],
-    properties                  => $hadoop_properties,
+        hdfs_deployed               => $hdfs_deployed,
+        zookeeper_deployed          => $zookeeper_deployed,
 
-    keytab_source_datanode        => $hadoop_datanode_keytab_source,
-    keytab_source_httpfs          => $hadoop_httpfs_keytab_source,
-    keytab_source_jobhistory      => $hadoop_jobhistory_keytab_source,
-    keytab_source_journalnode     => $hadoop_journalnode_keytab_source,
-    keytab_source_namenode        => $hadoop_namenode_keytab_source,
-    keytab_source_nfs             => $hadoop_nfs_keytab_source,
-    keytab_source_nodemanager     => $hadoop_nodemanager_keytab_source,
-    keytab_source_resourcemanager => $hadoop_resourcemanager_keytab_source,
-    keytab_source_http            => $hadoop_http_keytab_source,
-  }
-  class{ 'hive':
-      group               => 'hive',
-      metastore_hostname  => $hdfs_hostname,
-      realm               => $realm,
-      db                  => $db_engine,
-      db_password         => $hive_db_password,
-      sentry_hostname     => $hdfs_hostname,
-      zookeeper_hostnames => $zookeeper_hostnames,
-      properties          => $hive_properties,
-      keytab_source       => $hive_keytab_source,
+        hue_hostnames               => [$hue_hostname],
+        properties                  => $hadoop_properties,
+
+        keytab_source_datanode        => $hadoop_datanode_keytab_source,
+        keytab_source_httpfs          => $hadoop_httpfs_keytab_source,
+        keytab_source_jobhistory      => $hadoop_jobhistory_keytab_source,
+        keytab_source_journalnode     => $hadoop_journalnode_keytab_source,
+        keytab_source_namenode        => $hadoop_namenode_keytab_source,
+        keytab_source_nfs             => $hadoop_nfs_keytab_source,
+        keytab_source_nodemanager     => $hadoop_nodemanager_keytab_source,
+        keytab_source_resourcemanager => $hadoop_resourcemanager_keytab_source,
+        keytab_source_http            => $hadoop_http_keytab_source,
+
+        confdir => $alternative_configuration_dir_for_client,
+      }
+
+      class{ 'hive':
+          group               => 'hive',
+          metastore_hostname  => $hdfs_hostname,
+          realm               => $realm,
+          db                  => $db_engine,
+          db_password         => $hive_db_password,
+          sentry_hostname     => $hdfs_hostname,
+          zookeeper_hostnames => $zookeeper_hostnames,
+          properties          => $hive_properties,
+          keytab_source       => $hive_keytab_source,
+          confdir             => $alternative_configuration_dir_for_client,
+      }
+  } else {
+      class{ 'hadoop': 
+        hdfs_hostname               => $hdfs_hostname,
+        hdfs_hostname2              => $hdfs_hostname2,
+        yarn_hostname               => $yarn_hostname ,
+        yarn_hostname2              => $yarn_hostname2,
+        historyserver_hostname      => $historyserver_hostname,
+        httpfs_hostnames            => $httpfs_hostnames,
+        slaves                      => $slaves,
+        frontends                   => $frontends,
+        journalnode_hostnames       => $journalnode_hostnames,
+        zookeeper_hostnames         => $zookeeper_hostnames,
+        cluster_name                => $cluster_name,
+        realm                       => $realm,
+
+        https                       => $https,
+        https_cacerts               => $https_cacerts,
+        https_cacerts_password      => $https_cacerts_password,
+        https_keystore              => $https_keystore,
+        https_keystore_password     => $https_keystore_password,
+        https_keystore_keypassword  => $https_keystore_keypassword,
+
+        hdfs_data_dirs              => $hdfs_data_dirs,
+
+        hdfs_deployed               => $hdfs_deployed,
+        zookeeper_deployed          => $zookeeper_deployed,
+
+        hue_hostnames               => [$hue_hostname],
+        properties                  => $hadoop_properties,
+
+        keytab_source_datanode        => $hadoop_datanode_keytab_source,
+        keytab_source_httpfs          => $hadoop_httpfs_keytab_source,
+        keytab_source_jobhistory      => $hadoop_jobhistory_keytab_source,
+        keytab_source_journalnode     => $hadoop_journalnode_keytab_source,
+        keytab_source_namenode        => $hadoop_namenode_keytab_source,
+        keytab_source_nfs             => $hadoop_nfs_keytab_source,
+        keytab_source_nodemanager     => $hadoop_nodemanager_keytab_source,
+        keytab_source_resourcemanager => $hadoop_resourcemanager_keytab_source,
+        keytab_source_http            => $hadoop_http_keytab_source,
+      }
+
+      class{ 'hive':
+          group               => 'hive',
+          metastore_hostname  => $hdfs_hostname,
+          realm               => $realm,
+          db                  => $db_engine,
+          db_password         => $hive_db_password,
+          sentry_hostname     => $hdfs_hostname,
+          zookeeper_hostnames => $zookeeper_hostnames,
+          properties          => $hive_properties,
+          keytab_source       => $hive_keytab_source,
+      }
   }
 
   class{ 'impala':
@@ -310,8 +371,8 @@ class hiera-hadoop (
         source => $spark_keytab_source,
       }
     }
-
-  } elsif $node_type == 'trinary-master' {
+  }
+  elsif $node_type == 'trinary-master' {
     include hadoop::journalnode
     include hadoop::datanode
     include hadoop::nodemanager
@@ -324,8 +385,35 @@ class hiera-hadoop (
     }
     include ::zookeeper::server
     include ::impala::server
-  } elsif $node_type == 'frontend' {
+  }
+  elsif $node_type == 'frontend' {
     include hadoop::frontend
+  }
+  elsif $node_type == 'client' {
+    if $alternative_configuration_dir_for_client {
+      file { "${alternative_configuration_dir_for_client}":
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+      }
+      file { "${alternative_configuration_dir_for_client}/hadoop":
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+      }
+      file { "${alternative_configuration_dir_for_client}/hive":
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+      }
+    }
+    include hadoop::common::config
+    include hadoop::common::yarn::config
+    include hadoop::common::mapred::config
+    include hive::common::config
   }
   else {
     include hadoop::datanode
