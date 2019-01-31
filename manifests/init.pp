@@ -134,7 +134,7 @@ class hiera-hadoop (
         keytab_source_resourcemanager => $hadoop_resourcemanager_keytab_source,
         keytab_source_http            => $hadoop_http_keytab_source,
 
-        confdir => $alternative_configuration_dir_for_client,
+        confdir => "${alternative_configuration_dir_for_client}/hadoop",
       }
 
       class{ 'hive':
@@ -147,7 +147,7 @@ class hiera-hadoop (
           zookeeper_hostnames => $zookeeper_hostnames,
           properties          => $hive_properties,
           keytab_source       => $hive_keytab_source,
-          confdir             => $alternative_configuration_dir_for_client,
+          confdir             => "${alternative_configuration_dir_for_client}/hive",
       }
   } else {
       class{ 'hadoop': 
@@ -391,6 +391,9 @@ class hiera-hadoop (
   }
   elsif $node_type == 'client' {
     if $alternative_configuration_dir_for_client {
+      include hadoop::user
+      include hive::user
+      
       file { "${alternative_configuration_dir_for_client}":
         ensure => 'directory',
         owner  => 'root',
