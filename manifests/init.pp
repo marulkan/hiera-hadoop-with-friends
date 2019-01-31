@@ -391,7 +391,10 @@ class hiera-hadoop (
   }
   elsif $node_type == 'client' {
     if $alternative_configuration_dir_for_client {
-      include hadoop::user
+      group { 'hadoop':
+        ensure => present,
+        system => true,
+      }
       include hive::user
       
       file { "${alternative_configuration_dir_for_client}":
