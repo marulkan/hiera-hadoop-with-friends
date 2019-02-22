@@ -3,7 +3,7 @@ class hiera_hadoop::sentry {
     db            => $hiera_hadoop::db_engine,
     db_password   => $hiera_hadoop::sentry_db_password,
     realm         => $hiera_hadoop::realm,
-    admin_groups  => [ 'sentry', 'hive', 'impala', 'hue', 'selnhubadm' ],
+    admin_groups  => $hiera_hadoop::sentry_admin_groups,
     properties    => $hiera_hadoop::sentry_properties,
     keytab_source => $hiera_hadoop::sentry_keytab_source,
   }

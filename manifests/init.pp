@@ -54,6 +54,7 @@ class hiera_hadoop (
   $hive_db_password            = '',
   $hadoop_properties           = {},
   $sentry_properties           = {},
+  $sentry_admin_groups         = [ 'sentry', 'hive', 'impala', 'hue' ],
   $hive_properties             = {},
   $hue_properties              = {},
   $impala_params               = {
@@ -113,6 +114,7 @@ class hiera_hadoop (
 
     include hiera_hadoop::zookeeper
     include hiera_hadoop::hue
+    include hiera_hadoop::sentry
 
     class{ '::postgresql::server':
       postgres_password   => $postgres_password,
