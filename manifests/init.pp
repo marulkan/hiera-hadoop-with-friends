@@ -116,6 +116,8 @@ class hiera_hadoop (
     include hiera_hadoop::hue
     include hiera_hadoop::sentry
 
+    include hiera_hadoop::spark
+
     class{ '::postgresql::server':
       postgres_password   => $postgres_password,
     }
@@ -153,6 +155,8 @@ class hiera_hadoop (
     include ::hue::user
     include ::impala::user
 
+    include hiera_hadoop::spark
+
     if $knox_keytab_source {
       file { $knox_keytab:
         owner  => 'knox',
@@ -181,6 +185,8 @@ class hiera_hadoop (
     include hiera_hadoop::zookeeper
 
     include ::impala::server
+
+    include hiera_hadoop::spark
   }
   elsif $node_type == 'frontend' {
     include hadoop::frontend
@@ -229,5 +235,7 @@ class hiera_hadoop (
     include hadoop::nodemanager
     include ::hive::worker
     include ::impala::server
+
+    include hiera_hadoop::spark
   }
 }
