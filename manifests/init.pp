@@ -79,7 +79,7 @@ class hiera_hadoop (
     frontend      => 'spark-python',
     historyserver => 'spark-history-server',
     worker        => 'spark-worker',
-  }
+  },
 
   $impala_keytab_source    = undef,
   $hive_keytab_source      = undef,
