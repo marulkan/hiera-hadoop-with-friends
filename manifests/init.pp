@@ -73,6 +73,14 @@ class hiera_hadoop (
   $knox_keytab      = '/etc/security/keytab/knox.service.keytab',
   $spark_keytab     = '/etc/security/keytab/spark.service.keytab',
 
+  $spark_packages = {
+    common        => 'spark-core',
+    master        => 'spark-master',
+    frontend      => 'spark-python',
+    historyserver => 'spark-history-server',
+    worker        => 'spark-worker',
+  }
+
   $impala_keytab_source    = undef,
   $hive_keytab_source      = undef,
   $hue_keytab_source       = undef,

@@ -4,6 +4,7 @@ class hiera_hadoop::spark {
     hdfs_hostname          => $::fqdn,
     realm                  => $hiera_hadoop::realm,
     keytab_source          => $hiera_hadoop::spark_keytab_source,
+    packages               => $hiera_hadoop::spark_packages,
   }
   
   include ::spark
