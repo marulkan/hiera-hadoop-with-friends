@@ -132,15 +132,6 @@ class hiera_hadoop (
         source => $knox_keytab_source,
       }
     }
-    if $spark_keytab_source {
-      file { $spark_keytab:
-        owner  => 'spark',
-        group  => 'spark',
-        mode   => '0400',
-        source => $spark_keytab_source,
-      }
-    }
-
   } elsif $node_type == 'secondary-master' {
     include hiera_hadoop::hadoop
     include hiera_hadoop::hive
@@ -163,14 +154,6 @@ class hiera_hadoop (
         group  => 'knox',
         mode   => '0400',
         source => $knox_keytab_source,
-      }
-    }
-    if $spark_keytab_source {
-      file { $spark_keytab:
-        owner  => 'spark',
-        group  => 'spark',
-        mode   => '0400',
-        source => $spark_keytab_source,
       }
     }
   }

@@ -3,6 +3,7 @@ class hiera_hadoop::spark {
     historyserver_hostname => $hiera_hadoop::hdfs_hostname,
     hdfs_hostname          => $::fqdn,
     realm                  => $hiera_hadoop::realm,
+    keytab_source          => $hiera_hadoop::spark_keytab_source,
   }
   
   include ::spark
