@@ -16,7 +16,9 @@ class hiera_hadoop::spark {
     Class['hadoop::namenode::service'] -> Class['::spark::historyserver::service']
   } elsif $hiera_hadoop::node_type == 'secondary-master' {
     include ::spark::user
+    include ::spark::historyserver
   } elsif $hiera_hadoop::node_type == 'client' {
     include ::spark::frontend
+    include ::spark::historyserver
   }
 }
