@@ -5,6 +5,7 @@ class hiera_hadoop::spark {
     realm                  => $hiera_hadoop::realm,
     keytab_source          => $hiera_hadoop::spark_keytab_source,
     packages               => $hiera_hadoop::spark_packages,
+    shell_env              => $hiera_hadoop::spark_shell_env,
   }
   
   include ::spark

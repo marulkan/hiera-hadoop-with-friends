@@ -80,6 +80,7 @@ class hiera_hadoop (
     historyserver => 'spark-history-server',
     worker        => 'spark-worker',
   },
+  $spark_shell_env = [],
 
   $impala_keytab_source    = undef,
   $hive_keytab_source      = undef,
