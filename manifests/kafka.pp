@@ -17,12 +17,12 @@ class hiera_hadoop::kafka {
     package_name             => $hiera_hadoop::kafka_package_name,
   }
   if member($hiera_hadoop::kafka_brokers, $::fqdn) {
-    if $hiera_hadoop::knox_keytab_source {
-      file { $hiera_hadoop::knox_keytab:
+    if $hiera_hadoop::kafka_keytab_source {
+      file { $hiera_hadoop::kafka_keytab:
         owner  => 'knox',
         group  => 'knox',
         mode   => '0400',
-        source => $hiera_hadoop::knox_keytab_source,
+        source => $hiera_hadoop::kafka_keytab_source,
       }
     }
   }
