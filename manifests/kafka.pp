@@ -15,15 +15,7 @@ class hiera_hadoop::kafka {
     properties               => $hiera_hadoop::kafka_properties,
     sentry_enable            => $hiera_hadoop::kafka_sentry_enabled,
     package_name             => $hiera_hadoop::kafka_package_name,
-  }
-  if member($hiera_hadoop::kafka_brokers, $::fqdn) {
-    if $hiera_hadoop::kafka_keytab_source {
-      file { $hiera_hadoop::kafka_keytab:
-        owner  => 'knox',
-        group  => 'knox',
-        mode   => '0400',
-        source => $hiera_hadoop::kafka_keytab_source,
-      }
-    }
+    keytab                   => $hiera_hadoop::kafka_keytab,
+    keytab_source            => $hiera_hadoop::kafka_keytab_source,
   }
 }
