@@ -70,6 +70,19 @@ class hiera_hadoop (
     },
   },
 
+  $hbase_master_hostname  = undef, # ''
+  $hbase_backup_hostnames = undef, # []
+  $hbase_frontends        = [],
+  $hbase_properties       = undef,
+  $hbase_group            = 'users',
+  $hbase_acl              = undef,
+
+  $kafka_brokers        = [ ],
+  $kafka_log_dirs       = [ ],
+  $kafka_properties     = undef,
+  $kafka_sentry_enabled = true,
+  $kafka_package_name   = 'kafka-server',
+
   $knox_keytab      = '/etc/security/keytab/knox.service.keytab',
   $spark_keytab     = '/etc/security/keytab/spark.service.keytab',
 
@@ -108,6 +121,8 @@ class hiera_hadoop (
     include hiera_hadoop::hadoop
     include hiera_hadoop::hive
     include hiera_hadoop::impala
+    #include hiera_hadoop::hbase
+    include hiera_hadoop::kafka
     include hadoop::namenode
     include hadoop::resourcemanager
     include hadoop::historyserver
@@ -120,6 +135,8 @@ class hiera_hadoop (
     include ::impala::frontend
     include ::impala::statestore
     include ::impala::catalog
+
+    include ::kafka::server
 
     include hiera_hadoop::zookeeper
     include hiera_hadoop::hue
@@ -145,12 +162,15 @@ class hiera_hadoop (
     include hiera_hadoop::hadoop
     include hiera_hadoop::hive
     include hiera_hadoop::impala
+    include hiera_hadoop::kafka
     include hadoop::namenode
     include hadoop::resourcemanager
     include hadoop::zkfc
     include hadoop::journalnode
     include hive::user
     include hiera_hadoop::zookeeper
+
+    include ::kafka::server
 
     include ::hue::user
     include ::impala::user
@@ -170,11 +190,16 @@ class hiera_hadoop (
     include hiera_hadoop::hadoop
     include hiera_hadoop::hive
     include hiera_hadoop::impala
+    #include hiera_hadoop::hbase
+    include hiera_hadoop::kafka
     include hadoop::journalnode
     include hadoop::datanode
     include hadoop::nodemanager
     include ::hive::worker
     include hiera_hadoop::zookeeper
+
+    #include ::hbase::regionserver
+    include ::kafka::client
 
     include ::impala::server
 
@@ -187,6 +212,9 @@ class hiera_hadoop (
     include hiera_hadoop::hadoop
     include hiera_hadoop::hive
     include hiera_hadoop::impala
+    #include hiera_hadoop::hbase
+
+    #include ::hbase::frontend
 
     if $alternative_configuration_dir_for_client {
       group { 'hadoop':
@@ -223,10 +251,15 @@ class hiera_hadoop (
     include hiera_hadoop::hadoop
     include hiera_hadoop::hive
     include hiera_hadoop::impala
+    #include hiera_hadoop::hbase
+    include hiera_hadoop::kafka
     include hadoop::datanode
     include hadoop::nodemanager
     include ::hive::worker
     include ::impala::server
+
+    #include ::hbase::regionserver
+    include ::kafka::client
 
     include hiera_hadoop::spark
   }
