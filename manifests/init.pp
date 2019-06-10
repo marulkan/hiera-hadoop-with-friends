@@ -205,6 +205,7 @@ class hiera_hadoop (
 
     include ::impala::server
 
+    include hiera_hadoop::sentry
     include hiera_hadoop::spark
   }
   elsif $node_type == 'frontend' {
@@ -263,6 +264,7 @@ class hiera_hadoop (
     #include ::hbase::regionserver
     include ::kafka::server
 
+    include hiera_hadoop::sentry
     include hiera_hadoop::spark
   }
 }
