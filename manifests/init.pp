@@ -123,8 +123,7 @@ class hiera_hadoop (
     include hiera_hadoop::hadoop
     include hiera_hadoop::hive
     include hiera_hadoop::impala
-    #include hiera_hadoop::hbase
-    #include hiera_hadoop::kafka
+    include hiera_hadoop::hbase
     include hadoop::namenode
     include hadoop::resourcemanager
     include hadoop::historyserver
@@ -192,7 +191,7 @@ class hiera_hadoop (
     include hiera_hadoop::hadoop
     include hiera_hadoop::hive
     include hiera_hadoop::impala
-    #include hiera_hadoop::hbase
+    include hiera_hadoop::hbase
     include hiera_hadoop::kafka
     include hadoop::journalnode
     include hadoop::datanode
@@ -200,7 +199,7 @@ class hiera_hadoop (
     include ::hive::worker
     include hiera_hadoop::zookeeper
 
-    #include ::hbase::regionserver
+    include ::hbase::regionserver
     include ::kafka::server
 
     include ::impala::server
@@ -215,7 +214,7 @@ class hiera_hadoop (
     include hiera_hadoop::hadoop
     include hiera_hadoop::hive
     include hiera_hadoop::impala
-    #include hiera_hadoop::hbase
+    include hiera_hadoop::hbase
 
     #include ::hbase::frontend
 
@@ -254,14 +253,14 @@ class hiera_hadoop (
     include hiera_hadoop::hadoop
     include hiera_hadoop::hive
     include hiera_hadoop::impala
-    #include hiera_hadoop::hbase
+    include hiera_hadoop::hbase
     include hiera_hadoop::kafka
     include hadoop::datanode
     include hadoop::nodemanager
     include ::hive::worker
     include ::impala::server
 
-    #include ::hbase::regionserver
+    include ::hbase::regionserver
     include ::kafka::server
 
     include hiera_hadoop::sentry
