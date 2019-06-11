@@ -88,6 +88,8 @@ class hiera_hadoop (
   $kafka_keytab         = '/etc/security/keytab/kafka.service.keytab',
   $kafka_keytab_source  = undef,
 
+  $kafka_properties = {},
+
   $knox_keytab      = '/etc/security/keytab/knox.service.keytab',
   $spark_keytab     = '/etc/security/keytab/spark.service.keytab',
 
