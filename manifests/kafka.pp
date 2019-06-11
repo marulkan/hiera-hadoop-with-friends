@@ -18,5 +18,6 @@ class hiera_hadoop::kafka {
     keytab                   => $hiera_hadoop::kafka_keytab,
     keytab_source            => $hiera_hadoop::kafka_keytab_source,
     properties               => $hiera_hadoop::kafka_properties,
+    acl_enable               => true,
   }
 }
