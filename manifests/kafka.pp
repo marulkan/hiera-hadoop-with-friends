@@ -17,6 +17,5 @@ class hiera_hadoop::kafka {
     package_name             => $hiera_hadoop::kafka_package_name,
     keytab                   => $hiera_hadoop::kafka_keytab,
     keytab_source            => $hiera_hadoop::kafka_keytab_source,
-    acl_enable               => true,
   }
 }
