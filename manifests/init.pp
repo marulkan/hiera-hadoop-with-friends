@@ -82,7 +82,6 @@ class hiera_hadoop (
 
   $kafka_brokers        = [ ],
   $kafka_log_dirs       = [ ],
-  $kafka_properties     = undef,
   $kafka_sentry_enabled = true,
   $kafka_package_name   = 'kafka-server',
   $kafka_keytab         = '/etc/security/keytab/kafka.service.keytab',
