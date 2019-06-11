@@ -14,6 +14,8 @@ class hiera_hadoop::hbase {
     properties                 => $hiera_hadoop::hbase_properties,
     group                      => $hiera_hadoop::hbase_group,
     acl                        => $hiera_hadoop::hbase_acl,
+    keytab                     => $hiera_hadoop::hbase_keytab,
+    keytab_source              => $hiera_hadoop::hbase_keytab_source,
   }
 
   if $hiera_hadoop::node_type == 'primary-master' {

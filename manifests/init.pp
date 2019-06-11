@@ -76,6 +76,8 @@ class hiera_hadoop (
   $hbase_properties       = undef,
   $hbase_group            = 'users',
   $hbase_acl              = undef,
+  $hbase_keytab         = '/etc/security/keytab/hbase.service.keytab',
+  $hbase_keytab_source  = undef,
 
   $kafka_brokers        = [ ],
   $kafka_log_dirs       = [ ],
