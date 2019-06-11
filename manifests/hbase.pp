@@ -3,6 +3,7 @@ class hiera_hadoop::hbase {
     hdfs_hostname              => $hiera_hadoop::hdfs_hostname,
     master_hostname            => $hiera_hadoop::hbase_master_hostname,
     backup_hostnames           => $hiera_hadoop::hbase_backup_hostnames,
+    thrift_hostnames           => $hiera_hadoop::hbase_thrift_hostnames,
     zookeeper_hostnames        => $hiera_hadoop::zookeeper_hostnames,
     slaves                     => $hiera_hadoop::slaves,
     frontends                  => $hiera_hadoop::hbase_frontends,
@@ -20,6 +21,7 @@ class hiera_hadoop::hbase {
 
   if $hiera_hadoop::node_type == 'primary-master' {
     include ::hbase::master
+    include ::hbase::thriftserver
     include ::hbase::hdfs
 
     Class['hadoop::namenode::service'] -> Class['hbase::hdfs']
@@ -27,6 +29,7 @@ class hiera_hadoop::hbase {
 
   } elsif $hiera_hadoop::node_type == 'secondary-master' {
     include ::hbase::master
+    include ::hbase::thriftserver
     include ::hbase::user
 
     Class['hadoop::namenode::service'] -> Class['hbase::master::service']

@@ -72,6 +72,7 @@ class hiera_hadoop (
 
   $hbase_master_hostname  = undef, # ''
   $hbase_backup_hostnames = undef, # []
+  $hbase_thrift_hostnames = undef, # []
   $hbase_frontends        = [],
   $hbase_properties       = undef,
   $hbase_group            = 'users',
