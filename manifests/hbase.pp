@@ -16,14 +16,14 @@ class hiera_hadoop::hbase {
     acl                        => $hiera_hadoop::hbase_acl,
   }
 
-  if $node_type == 'primary-master' {
+  if $hiera_hadoop::node_type == 'primary-master' {
     include ::hbase::master
     include ::hbase::hdfs
 
     Class['hadoop::namenode::service'] -> Class['hbase::hdfs']
     Class['hadoop::namenode::service'] -> Class['hbase::master::service']
 
-  } elsif $node_type == 'secondary-master' {
+  } elsif $hiera_hadoop::node_type == 'secondary-master' {
     include ::hbase::master
     include ::hbase::user
 
