@@ -1,11 +1,12 @@
 class hiera_hadoop::sentry {
   class{'::sentry':
-    db            => $hiera_hadoop::db_engine,
-    db_password   => $hiera_hadoop::sentry_db_password,
-    realm         => $hiera_hadoop::realm,
-    admin_groups  => $hiera_hadoop::sentry_admin_groups,
-    properties    => $hiera_hadoop::sentry_properties,
-    keytab_source => $hiera_hadoop::sentry_keytab_source,
+    db              => $hiera_hadoop::db_engine,
+    db_password     => $hiera_hadoop::sentry_db_password,
+    realm           => $hiera_hadoop::realm,
+    admin_groups    => $hiera_hadoop::sentry_admin_groups,
+    properties      => $hiera_hadoop::sentry_properties,
+    keytab_source   => $hiera_hadoop::sentry_keytab_source,
+    sentry_hostname => $hiera_hadoop::sentry_hostname,
   }
 
   if $node_type == 'primary-master' {

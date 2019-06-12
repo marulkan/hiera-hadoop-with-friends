@@ -50,6 +50,7 @@ class hiera_hadoop (
   $impala_https_certificate    = '/etc/grid-security/hostcert.pem',
   $impala_https_private_key    = '/etc/grid-security/hostkey.pem',
 
+  $sentry_hostname             = $::fqdn,
   $sentry_db_password          = '',
   $hive_db_password            = '',
   $hadoop_properties           = {},
