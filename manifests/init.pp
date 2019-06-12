@@ -144,6 +144,7 @@ class hiera_hadoop (
 
     include hiera_hadoop::kafka
     include ::kafka::client
+    include ::kafka::user
 
     include hiera_hadoop::zookeeper
     include hiera_hadoop::hue
@@ -178,6 +179,7 @@ class hiera_hadoop (
     include hiera_hadoop::zookeeper
 
     include ::kafka::client
+    include ::kafka::user
 
     include ::hue::user
     include ::impala::user
@@ -224,6 +226,7 @@ class hiera_hadoop (
     include hiera_hadoop::hbase
     include hiera_hadoop::kafka
     include ::kafka::client
+    include ::kafka::user
 
     #include ::hbase::frontend
 
