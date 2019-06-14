@@ -227,6 +227,7 @@ class hiera_hadoop (
     include hiera_hadoop::kafka
     include ::kafka::client
     include ::kafka::user
+    include ::hbase::common::config
 
     #include ::hbase::frontend
 
