@@ -171,6 +171,7 @@ class hiera_hadoop (
     include hiera_hadoop::hive
     include hiera_hadoop::impala
     include hiera_hadoop::kafka
+    include hiera_hadoop::hbase
     include hadoop::namenode
     include hadoop::resourcemanager
     include hadoop::zkfc
