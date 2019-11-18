@@ -60,12 +60,10 @@ class hiera_hadoop (
   $hue_properties              = {},
   $impala_params               = {
     catalog                  => {
-      'sentry_config'      => '/etc/sentry/conf/sentry-site.xml',
     },
     server                             => {
       'authorized_proxy_user_config' => '\'hue=*\'',
       'server_name'                  => 'server1',
-      'sentry_config'                => '/etc/sentry/conf/sentry-site.xml',
     },
     statestore               => {
     },
@@ -83,7 +81,7 @@ class hiera_hadoop (
 
   $kafka_brokers        = [ ],
   $kafka_log_dirs       = [ ],
-  $kafka_sentry_enabled = true,
+  $kafka_sentry_enabled = false,
   $kafka_package_name   = 'kafka-server',
   $kafka_keytab         = '/etc/security/keytab/kafka.service.keytab',
   $kafka_keytab_source  = undef,
@@ -148,7 +146,7 @@ class hiera_hadoop (
 
     include hiera_hadoop::zookeeper
     include hiera_hadoop::hue
-    include hiera_hadoop::sentry
+    #include hiera_hadoop::sentry
 
     include hiera_hadoop::spark
 
@@ -214,7 +212,7 @@ class hiera_hadoop (
 
     include ::impala::server
 
-    include hiera_hadoop::sentry
+    #include hiera_hadoop::sentry
     include hiera_hadoop::spark
   }
   elsif $node_type == 'frontend' {
@@ -278,7 +276,7 @@ class hiera_hadoop (
     include ::kafka::server
     include ::kafka::client
 
-    include hiera_hadoop::sentry
+    #include hiera_hadoop::sentry
     include hiera_hadoop::spark
   }
 }
